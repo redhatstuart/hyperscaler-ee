@@ -1,0 +1,36 @@
+---
+- name: Create Azure Red Hat OpenShift Cluster
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create Azure Red Hat OpenShift Cluster
+      azure.azcollection.azure_rm_openshiftmanagedcluster:
+        name: my-arocluster
+        location: East US  # Replace with your desired Azure region
+        resource_group: my-resource-group  # Replace with your Azure resource group
+        auth_source: auto
+        client_id: "YOUR_AZURE_CLIENT_ID"
+        client_secret: "YOUR_AZURE_CLIENT_SECRET"
+        ssh_key_data: "YOUR_SSH_PUBLIC_KEY"
+        openshift_version: 4.7  # Replace with your desired OpenShift version
+        pull_secret: "YOUR_PULL_SECRET_JSON"  # Replace with your ARO pull secret
+      register: aro_result
+
+    - name: Display ARO Cluster Details
+      debug:
+        var: aro_result
+
+- name: Deploy Applications on ARO Cluster
+  hosts: localhost
+  tasks:
+    # Add tasks to deploy applications, configure routes, etc.
+    - name: Deploy Sample Application
+      shell: >
+        oc new-app
+        --name=myapp
+        https://github.com/openshift/nodejs-ex.git
+      args:
+        chdir: ~/myapp
+
+    # Add more tasks as needed for application deployment and configuration
+
