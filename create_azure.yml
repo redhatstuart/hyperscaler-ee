@@ -1,0 +1,80 @@
+---
+- name: Create Azure VM
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create Azure Resource Group
+      azure_rm_resourcegroup:
+        name: myResourceGroup  # Replace with your desired resource group name
+        location: East US  # Replace with your desired Azure region
+      register: rg_result
+
+    - name: Create Azure Virtual Network
+      azure_rm_virtualnetwork:
+        resource_group: "{{ rg_result.name }}"
+        name: myVNet  # Replace with your desired VNet name
+        address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
+        location: East US  # Replace with your desired Azure region
+      register: vnet_result
+
+    - name: Create Azure Subnet
+      azure_rm_subnet:
+        resource_group: "{{ rg_result.name }}"
+        virtual_network_name: "{{ vnet_result.name }}"
+        name: mySubnet  # Replace with your desired subnet name
+        address_prefix: "10.0.0.0/24"  # Replace with your desired subnet address prefix
+      register: subnet_result
+
+    - name: Create Azure Public IP
+      azure_rm_publicipaddress:
+        resource_group: "{{ rg_result.name }}"
+        allocation_method: Static
+        name: myPublicIP  # Replace with your desired public IP name
+        location: East US  # Replace with your desired Azure region
+      register: public_ip_result
+
+    - name: Create Azure Network Security Group (NSG)
+      azure_rm_securitygroup:
+        resource_group: "{{ rg_result.name }}"
+        name: myNSG  # Replace with your desired NSG name
+        rules:
+          - name: SSH
+            protocol: Tcp
+            destination_port_range: 22
+            access: Allow
+            direction: Inbound
+      register: nsg_result
+
+    - name: Create Azure Network Interface Card (NIC)
+      azure_rm_networkinterface:
+        resource_group: "{{ rg_result.name }}"
+        name: myNIC  # Replace with your desired NIC name
+        virtual_network: "{{ vnet_result.name }}"
+        subnet: "{{ subnet_result.name }}"
+        public_ip_name: "{{ public_ip_result.name }}"
+        security_group: "{{ nsg_result.name }}"
+      register: nic_result
+
+    - name: Create Azure Virtual Machine
+      azure_rm_virtualmachine:
+        resource_group: "{{ rg_result.name }}"
+        name: myVM  # Replace with your desired VM name
+        vm_size: Standard_DS2_v2  # Replace with your desired VM size
+        storage_account_name: mystorageaccount  # Replace with your storage account name
+        admin_username: azureuser  # Replace with your desired admin username
+        admin_password: "{{ vaulted_password }}"  # Use an Ansible vault to securely store the password
+        network_interfaces: "{{ [nic_result.name] }}"
+        image:
+          offer: RHEL
+          publisher: RedHat
+          sku: 9-LVM
+          version: latest
+      register: vm_result
+
+    - name: Display VM Public IP
+      debug:
+        var: public_ip_result.ipAddress
+
+  vars_files:
+    - secrets.yml  # Store your sensitive data (e.g., admin password) in this Ansible vault-encrypted file
+
