@@ -1,5 +1,5 @@
 # hyperscaler-ee
-Execution environment configuration and sample playbooks for hyperscaler provisioning
+## Execution environment configuration and sample playbooks for hyperscaler provisioning
 
 Given a host running Ansible Automation Platform (AAP) Controller / Automation Hub, the default execution environment "ee-supported-rhelX:latest" includes provisioning and control modules for Amazon Web Services (AWS) resources. This module, however, does not include support for Google Cloud Platform (GCP) or Microsoft Azure installed by default.
 
@@ -21,6 +21,6 @@ After the new execution environment has been built, you can push this so your Au
 
 The following text files will show you the Ansible modules that are present in each of the execution-enviroments we have discussed:
 
-* [ee-supported-modules.txt]
-* [ee-minimal-modules.txt]
-* [ee-hyperscaler-modules.txt]
+* [ee-supported-modules.txt](ee-supported-modules.txt)
+* [ee-minimal-modules.txt](ee-minimal-modules.txt)
+* [ee-hyperscaler-modules.txt](ee-hyperscaler-modules.txt)
