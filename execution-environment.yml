@@ -1,0 +1,9 @@
+---
+version: 1
+
+build_arg_defaults:
+  EE_BASE_IMAGE: 'registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel9:latest'
+
+dependencies:
+  galaxy: requirements.yml
+

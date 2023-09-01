@@ -1,0 +1,12 @@
+---
+collections:
+  - amazon.aws
+  - ansible.posix
+  - ansible.utils
+  - ansible.windows
+  - azure.azcollection
+  - cloud.common
+  - cloud.terraform
+  - google.cloud
+  - vmware.vmware_rest
+
