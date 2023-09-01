@@ -18,3 +18,9 @@ After the new execution environment has been built, you can push this so your Au
 
 5. podman tag localhost/hyperscaler-ee fqdn.of.your.automation.hub.com/hyperscaler-ee
 6. podman push fqdn.of.your.automation.hub.com/hyperscaler-ee
+
+The following text files will show you the Ansible modules that are present in each of the execution-enviroments we have discussed:
+
+* [ee-supported-modules.txt]
+* [ee-minimal-modules.txt]
+* [ee-hyperscaler-modules.txt]
