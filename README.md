@@ -9,12 +9,12 @@ This configuration assumes that you have access to registry.redhat.io and have s
 
 To use this repo:
 
-1: git clone https://github.com/redhatstuart/hyperscaler-ee
-2: podman login registry.redhat.io
-3: Customize execution-environment.yml (if necessary)
-4: ansible-builder build -v3 -t hyperscaler-ee
+1. git clone https://github.com/redhatstuart/hyperscaler-ee
+2. podman login registry.redhat.io
+3. Customize execution-environment.yml (if necessary)
+4. ansible-builder build -v3 -t hyperscaler-ee
 
 After the new execution environment has been built, you can push this so your Automation Hub and subsequently have your AAP controller ingest it.
 
-5: podman tag localhost/hyperscaler-ee fqdn.of.your.automation.hub.com/hyperscaler-ee
-6: podman push fqdn.of.your.automation.hub.com/hyperscaler-ee
+5. podman tag localhost/hyperscaler-ee fqdn.of.your.automation.hub.com/hyperscaler-ee
+6. podman push fqdn.of.your.automation.hub.com/hyperscaler-ee
