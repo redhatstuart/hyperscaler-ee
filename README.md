@@ -23,4 +23,4 @@ The following text files will show you the Ansible modules that are present in e
 
 * [ee-supported-modules.txt](ee-supported-modules.txt)
 * [ee-minimal-modules.txt](ee-minimal-modules.txt)
-* [ee-hyperscaler-modules.txt](ee-hyperscaler-modules.txt)
+* [ee-hyperscaler-modules.txt](ee-hyperscaler-modules.txt) <-- This is the EE you should end up with after ansible-builder is complete
