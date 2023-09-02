@@ -71,5 +71,5 @@
 
     - name: Display VM Public IP
       debug:
-        var: public_ip_result.ipAddress
+        var: public_ip_result
 
