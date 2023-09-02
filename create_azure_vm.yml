@@ -58,10 +58,10 @@
     - name: Create Azure Virtual Machine
       azure_rm_virtualmachine:
         resource_group: "{{ rg_result.name }}"
-        name: myVM  # Replace with your desired VM name
+        name: "{{ myVM }}"  # Replace with your desired VM name
         vm_size: Standard_DS2_v2  # Replace with your desired VM size
         storage_account_name: mystorageaccount  # Replace with your storage account name
-        admin_username: azureuser  # Replace with your desired admin username
+        admin_username: azureuser  # Pass as a variable or replace with your desired admin username
         admin_password: "{{ vaulted_password }}"  # Use an Ansible vault to securely store the password
         network_interfaces: "{{ [nic_result.name] }}"
         image:
@@ -74,7 +74,4 @@
     - name: Display VM Public IP
       debug:
         var: public_ip_result.ipAddress
-
-#  vars_files:
-#    - secrets.yml  # Store your sensitive data (e.g., admin password) in this Ansible vault-encrypted file
 
