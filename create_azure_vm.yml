@@ -48,17 +48,21 @@
         name: "{{ prefix }}-nic"
         virtual_network: "{{ prefix }}-vnet"
         subnet: "{{ prefix }}-subnet"
-        public_ip_name: "{{ prefix }}-pip"
         security_group: "{{ prefix }}-nsg"
+        ip_configurations:
+        - name: ipconfig1
+          public_ip_name: "{{ prefix }}-pip"
+          primary: True
 
     - name: Create Azure Virtual Machine
       azure.azcollection.azure_rm_virtualmachine:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vm"
         vm_size: "{{ vmSize }}"
+        managed_disk_type: Premium_LRS
         admin_username: "{{ admin_username }}"
         admin_password: "{{ admin_password }}"  # Use an Ansible vault to securely store the password
-        network_interfaces: "{{ prefix }}-nic }}"
+        network_interfaces: "{{ prefix }}-nic"
         image:
           offer: RHEL
           publisher: RedHat
