@@ -71,5 +71,5 @@
 
     - name: Display VM Public IP
       debug:
-        var: public_ip_result
+        msg: "You can SSH to the VM using the IP address: {{ public_ip_result.ip_address }}"
 
