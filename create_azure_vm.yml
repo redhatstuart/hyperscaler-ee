@@ -6,15 +6,16 @@
     - name: Create Azure Resource Group
       azure_rm_resourcegroup:
         name: "{{ prefix }}-rg"
-        location: eastus  # Replace with your desired Azure region
+        location: "{{ azure_dc }}"
       register: rg_result
 
     - name: Create Azure Virtual Network
       azure_rm_virtualnetwork:
-        resource_group: "{{ rg_result.name }}"
+#        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nsg"
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
-        location: eastus  # Replace with your desired Azure region
+        location: "{{ azure_dc }}"
       register: vnet_result
 
     - name: Create Azure Subnet
@@ -30,7 +31,7 @@
         resource_group: "{{ rg_result.name }}"
         allocation_method: Static
         name: "{{ prefix }}-pip"
-        location: eastus  # Replace with your desired Azure region
+        location: "{{ azure_dc }}"
       register: public_ip_result
 
     - name: Create Azure Network Security Group (NSG)
