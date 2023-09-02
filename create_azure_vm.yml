@@ -4,26 +4,26 @@
   gather_facts: no
   tasks:
     - name: Create Azure Resource Group
-      azure_rm_resourcegroup:
+      azure.azcollection.azure_rm_resourcegroup:
         name: "{{ prefix }}-rg"
         location: "{{ azure_region }}"
 
     - name: Create Azure Virtual Network
-      azure_rm_virtualnetwork:
+      azure.azcollection.azure_rm_virtualnetwork:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vnet"
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
         location: "{{ azure_region }}"
 
     - name: Create Azure Subnet
-      azure_rm_subnet:
+      azure.azcollection.azure_rm_subnet:
         resource_group: "{{ prefix }}-rg"
         virtual_network_name: "{{ prefix }}-vnet"
         name: "{{ prefix }}-subnet"
         address_prefix: "10.0.0.0/24"  # Replace with your desired subnet address prefix
 
     - name: Create Azure Public IP
-      azure_rm_publicipaddress:
+      azure.azcollection.azure_rm_publicipaddress:
         resource_group: "{{ prefix }}-rg"
         allocation_method: Static
         name: "{{ prefix }}-pip"
@@ -31,18 +31,19 @@
       register: public_ip_result
 
     - name: Create Azure Network Security Group (NSG)
-      azure_rm_securitygroup:
+      azure.azcollection.azure_rm_securitygroup:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nsg"
         rules:
           - name: SSH
             protocol: Tcp
+            priority: 123
             destination_port_range: 22
             access: Allow
             direction: Inbound
 
     - name: Create Azure Network Interface Card (NIC)
-      azure_rm_networkinterface:
+      azure.azcollection.azure_rm_networkinterface:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nic"
         virtual_network: "{{ prefix }}-vnet"
@@ -51,7 +52,7 @@
         security_group: "{{ prefix }}-nsg"
 
     - name: Create Azure Virtual Machine
-      azure_rm_virtualmachine:
+      azure.azcollection.azure_rm_virtualmachine:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vm"
         vm_size: "{{ vmSize }}"
