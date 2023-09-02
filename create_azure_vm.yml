@@ -5,8 +5,8 @@
   tasks:
     - name: Create Azure Resource Group
       azure_rm_resourcegroup:
-        name: myResourceGroup  # Replace with your desired resource group name
-        location: East US  # Replace with your desired Azure region
+        name: {{ myResourceGroup }}  # Pass as a variable or replace with your desired resource group name
+        location: eastus  # Replace with your desired Azure region
       register: rg_result
 
     - name: Create Azure Virtual Network
@@ -14,7 +14,7 @@
         resource_group: "{{ rg_result.name }}"
         name: myVNet  # Replace with your desired VNet name
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
-        location: East US  # Replace with your desired Azure region
+        location: eastus  # Replace with your desired Azure region
       register: vnet_result
 
     - name: Create Azure Subnet
@@ -30,7 +30,7 @@
         resource_group: "{{ rg_result.name }}"
         allocation_method: Static
         name: myPublicIP  # Replace with your desired public IP name
-        location: East US  # Replace with your desired Azure region
+        location: eastus  # Replace with your desired Azure region
       register: public_ip_result
 
     - name: Create Azure Network Security Group (NSG)
@@ -75,6 +75,6 @@
       debug:
         var: public_ip_result.ipAddress
 
-  vars_files:
-    - secrets.yml  # Store your sensitive data (e.g., admin password) in this Ansible vault-encrypted file
+#  vars_files:
+#    - secrets.yml  # Store your sensitive data (e.g., admin password) in this Ansible vault-encrypted file
 
