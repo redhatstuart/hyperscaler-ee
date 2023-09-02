@@ -6,37 +6,33 @@
     - name: Create Azure Resource Group
       azure_rm_resourcegroup:
         name: "{{ prefix }}-rg"
-        location: "{{ azure_dc }}"
-      register: rg_result
+        location: "{{ azure_region }}"
 
     - name: Create Azure Virtual Network
       azure_rm_virtualnetwork:
-#        resource_group: "{{ rg_result.name }}"
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nsg"
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
-        location: "{{ azure_dc }}"
-      register: vnet_result
+        location: "{{ azure_region }}"
 
     - name: Create Azure Subnet
       azure_rm_subnet:
-        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         virtual_network_name: "{{ prefix }}-vnet"
         name: "{{ prefix }}-subnet"
         address_prefix: "10.0.0.0/24"  # Replace with your desired subnet address prefix
-      register: subnet_result
 
     - name: Create Azure Public IP
       azure_rm_publicipaddress:
-        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         allocation_method: Static
         name: "{{ prefix }}-pip"
-        location: "{{ azure_dc }}"
+        location: "{{ azure_region }}"
       register: public_ip_result
 
     - name: Create Azure Network Security Group (NSG)
       azure_rm_securitygroup:
-        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nsg"
         rules:
           - name: SSH
@@ -44,32 +40,29 @@
             destination_port_range: 22
             access: Allow
             direction: Inbound
-      register: nsg_result
 
     - name: Create Azure Network Interface Card (NIC)
       azure_rm_networkinterface:
-        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nic"
-        virtual_network: "{{ vnet_result.name }}"
-        subnet: "{{ subnet_result.name }}"
-        public_ip_name: "{{ public_ip_result.name }}"
-        security_group: "{{ nsg_result.name }}"
-      register: nic_result
+        virtual_network: "{{ prefix }}-vnet"
+        subnet: "{{ prefix }}-subnet"
+        public_ip_name: "{{ prefix }}-pip"
+        security_group: "{{ prefix }}-nsg"
 
     - name: Create Azure Virtual Machine
       azure_rm_virtualmachine:
-        resource_group: "{{ rg_result.name }}"
+        resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vm"
         vm_size: "{{ vmSize }}"
-        admin_username: azureuser  # Pass as a variable or replace with your desired admin username
-        admin_password: "{{ vaulted_password }}"  # Use an Ansible vault to securely store the password
-        network_interfaces: "{{ [nic_result.name] }}"
+        admin_username: "{{ admin_username }}"
+        admin_password: "{{ admin_password }}"  # Use an Ansible vault to securely store the password
+        network_interfaces: "{{ prefix }}-nic }}"
         image:
           offer: RHEL
           publisher: RedHat
           sku: 9-LVM
           version: latest
-      register: vm_result
 
     - name: Display VM Public IP
       debug:
