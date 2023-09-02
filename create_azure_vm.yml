@@ -11,7 +11,7 @@
     - name: Create Azure Virtual Network
       azure_rm_virtualnetwork:
         resource_group: "{{ prefix }}-rg"
-        name: "{{ prefix }}-nsg"
+        name: "{{ prefix }}-vnet"
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
         location: "{{ azure_region }}"
 
