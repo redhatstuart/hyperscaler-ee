@@ -5,7 +5,7 @@
   tasks:
     - name: Create Azure Resource Group
       azure_rm_resourcegroup:
-        name: {{ myResourceGroup }}  # Pass as a variable or replace with your desired resource group name
+        name: "{{ myResourceGroup }}"  # Pass as a variable or replace with your desired resource group name
         location: eastus  # Replace with your desired Azure region
       register: rg_result
 
