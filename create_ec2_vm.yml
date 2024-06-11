@@ -75,8 +75,9 @@
 
     - name: List all EIP addresses for a VM.
       amazon.aws.ec2_eip_info:
-#        filters:
-#          instance-id: "{{ vm.instance_ids[0] }}" 
+        region: "{{ region }}"
+#       filters:
+#         instance-id: "{{ vm.instance_ids[0] }}" 
       register: my_vm_eips
 
     - debug:
