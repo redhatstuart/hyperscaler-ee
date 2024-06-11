@@ -9,8 +9,8 @@
       no_log: true
       register: aws_ec2_key_pair
 
-    - dump:
-       var: aws_ec2_key_pair
+    - debug:
+        var: aws_ec2_key_pair
 
     - name: Create a new VPC 
       amazon.aws.ec2_vpc_net:
