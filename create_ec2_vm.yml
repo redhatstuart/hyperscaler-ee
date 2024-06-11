@@ -45,7 +45,7 @@
       amazon.aws.ec2_instance:
         name: "{{ prefix }}-vm"
         key_name: "{{ prefix }}-ssh-key"
-#        vpc_subnet_id: "{{ subnet.subnet.id }}"
+        vpc_subnet_id: "{{ subnet.subnet.id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ security_group.group_id  }}"
         count: 1
