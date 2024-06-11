@@ -15,6 +15,10 @@
         region: "{{ region }}"
         vpc_id: "{{ vpc.vpc.id }}"
       register: subnet
+
+    - name: dump subnet
+      debug:
+        var: subnet
     
     - name: Create a Security Group  
       amazon.aws.ec2_security_group:
