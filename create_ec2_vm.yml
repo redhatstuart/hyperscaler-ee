@@ -44,7 +44,8 @@
     - name: Launch an EC2 Instance
       amazon.aws.ec2_instance:
         name: "{{ prefix }}-vm"
-        key_name: "{{ prefix }}-ssh-key"
+#        key_name: "{{ prefix }}-ssh-key"
+        key_name: "ansible-demo"
         vpc_subnet_id: "{{ subnet.subnet.id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ security_group.group_id  }}"
