@@ -3,7 +3,7 @@
   hosts: localhost
   tasks:
 
-    - name: create a new EC2 key pair, returns generated private key
+    - name: create a new EC2 key pair
       amazon.aws.ec2_key:
         name: "{{ prefix }}-ssh-key"
         region: "{{ region }}"
