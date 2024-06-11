@@ -64,3 +64,7 @@
         network:
           assign_public_ip: true
         image_id: "{{ ami }}"
+      register: vm
+
+    -  debug:
+         var: vm
