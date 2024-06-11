@@ -60,11 +60,15 @@
         security_group: "{{ security_group.group_id  }}"
         count: 1
         wait: yes
+        wait_timeout: 600
         aws_region: "{{ region }}"
         network:
           assign_public_ip: true
         image_id: "{{ ami }}"
       register: vm
 
-    -  debug:
-         var: vm
+    - debug:
+        var: vm
+
+    - debug:
+        var: vm.public_ip 
