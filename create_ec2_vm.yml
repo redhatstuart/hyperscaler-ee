@@ -84,6 +84,7 @@
     - name: Gather information about a particular instance using ID
       amazon.aws.ec2_instance_info:
         instance_ids: "{{ vm.instance_ids[0] }}"
+        region: "{{ region }}"
 
     - debug:
         var: my_vm_eips
