@@ -1,43 +1,51 @@
 ---
-- name: Create EC2 Instance
+- name: Creating an EC2 Instance with Creating a VPC and Subnet Id
   hosts: localhost
-  gather_facts: False
-  vars:
-    aws_access_key: "YOUR_AWS_ACCESS_KEY"
-    aws_secret_key: "YOUR_AWS_SECRET_KEY"
-    region: "us-east-1"  # Change to your desired AWS region
-    instance_type: "t2.micro"  # Change to your desired instance type
-    ami_id: "ami-XXXXXXXXXXXXXXXXX"  # Change to the desired AMI ID
-    key_pair: "YOUR_KEY_PAIR_NAME"  # Change to your key pair name
-    security_group: "YOUR_SECURITY_GROUP"  # Change to your security group name
-    subnet_id: "YOUR_SUBNET_ID"  # Change to your subnet ID
-    ec2_tag_name: "MyEC2Instance"  # Change to your desired instance name
   tasks:
-    - name: Create EC2 Instance
-      ec2:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
+    - name: Create a new VPC 
+      amazon.aws.ec2_vpc_net:
+        name: "Ansible-Test"
+        cidr_block: "{{ cidr_block }}"
         region: "{{ region }}"
+      register: vpc
+  
+    - name: Create a new Subnet
+      amazon.aws.ec2_vpc_subnet:
+        cidr: "{{ cidr }}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpc.vpc.id }}"
+      register: subnet
+    
+    - name: Create a Security Group  
+      amazon.aws.ec2_security_group:
+        name: "Ansible-Test-Security-Group"
+        description: "Ansible-Testing"
+        vpc_id: "{{ vpc.vpc.id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            ports:
+            - 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: "allow all on port 80"
+      register: security_group
+    
+    - ansible.builtin.debug:
+        var: security_group.group_id
+
+    - ansible.builtin.debug:
+        var: subnet.subnet.id
+    
+    - name: Launch an EC2 Instance
+      amazon.aws.ec2_instance:
+        name: "Test-Ansible"
+        key_name: "{{ key_name }}"
+        vpc_subnet_id: "{{ subnet.subnet.id }}"
         instance_type: "{{ instance_type }}"
-        image: "{{ ami_id }}"
-        key_name: "{{ key_pair }}"
-        security_groups: "{{ security_group }}"
-        subnet_id: "{{ subnet_id }}"
+        security_group: "{{ security_group.group_id  }}"
         count: 1
         wait: yes
-        instance_tags:
-          Name: "{{ ec2_tag_name }}"
-      register: ec2
-
-    - name: Add new EC2 instance to hosts group
-      add_host:
-        name: "{{ ec2.instances[0].public_ip }}"
-        groups: ec2_instances
-
-- name: Print EC2 Instance IP
-  hosts: localhost
-  tasks:
-    - name: Print the IP address of the new EC2 instance
-      debug:
-        msg: "New EC2 instance IP address: {{ hostvars[groups['ec2_instances'][0]].ansible_host }}"
-
+        aws_region: "ap-south-1"
+        network:
+          assign_public_ip: true
+        image_id: "{{ ami }}"
