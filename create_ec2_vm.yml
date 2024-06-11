@@ -71,7 +71,7 @@
         var: vm
 
     - debug:
-        var: vm.instance_ids[0]
+        var: vm.instance_ids[0].public_ip_address
 
     - name: Gather information about a particular instance using ID
       amazon.aws.ec2_instance_info:
