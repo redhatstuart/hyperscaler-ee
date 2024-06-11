@@ -19,7 +19,7 @@
     - name: Create a Security Group  
       amazon.aws.ec2_security_group:
         name: "{{ prefix }}-security_group"
-#        description: "Ansible-Testing"
+        description: "{{ prefix }}-test-sg"
         vpc_id: "{{ vpc.vpc.id }}"
         region: "{{ region }}"
         rules:
