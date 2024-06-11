@@ -45,12 +45,6 @@
             rule_desc: "allow all on port 22"
       register: security_group
     
-    - ansible.builtin.debug:
-        var: security_group.group_id
-
-    - ansible.builtin.debug:
-        var: subnet.subnet.id
-    
     - name: Launch an EC2 Instance
       amazon.aws.ec2_instance:
         name: "{{ prefix }}-vm"
@@ -67,21 +61,15 @@
         image_id: "{{ ami }}"
       register: vm
 
-    - debug:
-        var: vm
-
-    - debug:
-        var: vm.instance_ids[0].public_ip_address
-
     - name: Gather information about a particular instance using ID
       amazon.aws.ec2_instance_info:
         instance_ids: "{{ vm.instance_ids[0] }}"
         region: "{{ region }}"
       register: info
 
-    - debug:
-        var: info
+    - name: Display VM Public IP
+      debug:
+        msg: "Your public IP address is: {{ info.instances[0].public_ip_address }}"
 
-    - debug:
-        var: info.instances[0].public_ip_address
+
 
