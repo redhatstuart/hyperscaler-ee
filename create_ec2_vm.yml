@@ -2,6 +2,16 @@
 - name: Creating an EC2 Instance with Creating a VPC and Subnet Id
   hosts: localhost
   tasks:
+
+    - name: create a new EC2 key pair, returns generated private key
+      amazon.aws.ec2_key:
+        name: {{ prefix }}-ssh-key
+      no_log: true
+      register: aws_ec2_key_pair
+
+    - dump:
+       var: aws_ec2_key_pair
+
     - name: Create a new VPC 
       amazon.aws.ec2_vpc_net:
         name: "{{ prefix }}-vpc_net"
@@ -44,8 +54,7 @@
     - name: Launch an EC2 Instance
       amazon.aws.ec2_instance:
         name: "{{ prefix }}-vm"
-#        key_name: "{{ prefix }}-ssh-key"
-        key_name: "ansible-demo"
+        key_name: "{{ prefix }}-ssh-key"
         vpc_subnet_id: "{{ subnet.subnet.id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ security_group.group_id  }}"
