@@ -83,5 +83,5 @@
         var: info
 
     - debug:
-        var: info.public_ip_address
+        var: info.instances[0].public_ip_address
 
