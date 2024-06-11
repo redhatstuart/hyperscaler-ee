@@ -7,6 +7,7 @@
       amazon.aws.ec2_key:
         name: "{{ prefix }}-ssh-key"
         region: "{{ region }}"
+        nolog: true
       register: aws_ec2_key_pair
 
     - debug:
