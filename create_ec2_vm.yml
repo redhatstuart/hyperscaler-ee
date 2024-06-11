@@ -82,3 +82,13 @@
     - debug:
         var: info
 
+
+
+    - name: List all EIP addresses in the current region.
+      amazon.aws.ec2_eip_info:
+          region: "{{ region }}"
+      register: regional_eip_addresses
+   
+
+    - debug:
+        var: regional_eip_addresses
