@@ -4,7 +4,7 @@
   tasks:
 
     - name: create a new EC2 key pair, returns generated private key
-      nolog: true
+      no_log: true
       amazon.aws.ec2_key:
         name: "{{ prefix }}-ssh-key"
         region: "{{ region }}"
