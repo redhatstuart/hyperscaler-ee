@@ -71,7 +71,7 @@
         var: vm
 
     - debug:
-        var: vm.public_ip 
+        var: vm.instance_ids[0]
 
     - name: List all EIP addresses for a VM.
       amazon.aws.ec2_eip_info:
