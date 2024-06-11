@@ -4,7 +4,7 @@
   tasks:
     - name: Create a new VPC 
       amazon.aws.ec2_vpc_net:
-        name: "Ansible-Test"
+        name: "{{ prefix }}-vpc_net"
         cidr_block: "{{ cidr_block }}"
         region: "{{ region }}"
       register: vpc
@@ -18,8 +18,8 @@
 
     - name: Create a Security Group  
       amazon.aws.ec2_security_group:
-        name: "Ansible-Test-Security-Group"
-        description: "Ansible-Testing"
+        name: "{{ prefix }}-security_group"
+#        description: "Ansible-Testing"
         vpc_id: "{{ vpc.vpc.id }}"
         region: "{{ region }}"
         rules:
@@ -43,14 +43,14 @@
     
     - name: Launch an EC2 Instance
       amazon.aws.ec2_instance:
-        name: "Test-Ansible"
+        name: "{{ prefix }}-vm"
         key_name: "{{ key_name }}"
 #        vpc_subnet_id: "{{ subnet.subnet.id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ security_group.group_id  }}"
         count: 1
         wait: yes
-        aws_region: "ap-south-1"
+        aws_region: "{{ region }}"
         network:
           assign_public_ip: true
         image_id: "{{ ami }}"
