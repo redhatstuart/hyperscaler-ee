@@ -71,5 +71,5 @@
 
     - name: Display VM Public IP
       debug:
-        var: public_ip_result.state.ip_address 
+        msg: "Your public IP address is: {{ public_ip_result.state.ip_address }}"
 
