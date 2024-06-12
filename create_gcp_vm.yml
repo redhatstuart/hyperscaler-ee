@@ -5,7 +5,7 @@
   tasks:
     - name: Create a disk
       google.cloud.gcp_compute_disk:
-        name: "{{ disk_name }}"
+        name: "{{ lightning }}-disk"
         size_gb: "{{ disk_size }}"
         source_image: "{{ source_image }}"
         zone: "{{ zone }}"
@@ -14,14 +14,14 @@
     
     - name: Create a Network in GCP
       google.cloud.gcp_compute_network:
-        name: "{{ network_name }}"
+        name: "{{ prefix }}-network"
         auto_create_subnetworks: false
         state: present
       register: network
 
     - name: Create a Subnet in the Network
       google.cloud.gcp_compute_subnetwork:
-        name: "{{ subnet_name }}"
+        name: "{{ prefix }}-subnet"
         region: "{{ region }}"
         ip_cidr_range: "{{ subnet_cidr }}"
         network: "{{ network }}"
@@ -30,7 +30,7 @@
 
     - name: Reserve a static IP Address
       google.cloud.gcp_compute_address:
-        name: "{{ ip_name }}"
+        name: "{{ prefix }}-ip"
         region: "{{ region }}"
         state: present
       register: address
@@ -38,7 +38,7 @@
     - name: Create an Instance 
       google.cloud.gcp_compute_instance:
         state: present
-        name: "{{ machine_name }}"
+        name: "{{ prefix }}-vm"
         machine_type: "{{ machine_type }}"
         zone: "{{ zone }}"
         disks:
@@ -52,3 +52,7 @@
               - name: External NAT
                 type: ONE_TO_ONE_NAT
                 nat_ip: "{{ address }}"
+      register: output
+
+    - debug:
+        var: output
