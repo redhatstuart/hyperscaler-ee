@@ -56,3 +56,17 @@
 
     - debug:
         var: output
+
+    - name: create a firewall
+      google.cloud.gcp_compute_firewall:
+        name: "{{ prefix }}-ssh-rule"
+        direction: "ingress"
+        disabled: "false"
+        allowed:
+        - ip_protocol: tcp
+          ports:
+          - '22'
+        network: "{{ network }}"
+        priority: "1000"
+        sourceRanges: "0.0.0.0/0"
+        state: present
