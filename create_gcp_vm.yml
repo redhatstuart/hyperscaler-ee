@@ -5,7 +5,7 @@
   tasks:
     - name: Create a disk
       google.cloud.gcp_compute_disk:
-        name: "{{ lightning }}-disk"
+        name: "{{ prefix }}-disk"
         size_gb: "{{ disk_size }}"
         source_image: "{{ source_image }}"
         zone: "{{ zone }}"
