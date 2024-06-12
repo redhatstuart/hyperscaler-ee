@@ -68,5 +68,5 @@
           - '22'
         network: "{{ network }}"
         priority: "1000"
-        sourceRanges: "0.0.0.0/0"
+        source_ranges: "0.0.0.0/0"
         state: present
