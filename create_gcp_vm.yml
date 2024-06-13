@@ -19,9 +19,6 @@
         state: present
       register: network
 
-    - debug:
-        var: network
-
     - name: Create Subnet
       google.cloud.gcp_compute_subnetwork:
         name: "{{ prefix }}-subnet"
@@ -37,6 +34,9 @@
         region: "{{ region }}"
         state: present
       register: address
+
+    - debug:
+        var: address
 
     - name: Create Virtual Machine
       google.cloud.gcp_compute_instance:
