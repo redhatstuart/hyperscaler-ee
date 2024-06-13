@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Create a disk
+    - name: Create fixed disk for OS image
       google.cloud.gcp_compute_disk:
         name: "{{ prefix }}-disk"
         size_gb: "{{ disk_size }}"
@@ -12,14 +12,14 @@
         state: present
       register: disk
     
-    - name: Create a Network in GCP
+    - name: Create VPC Network
       google.cloud.gcp_compute_network:
         name: "{{ prefix }}-network"
         auto_create_subnetworks: false
         state: present
       register: network
 
-    - name: Create a Subnet in the Network
+    - name: Create Subnet
       google.cloud.gcp_compute_subnetwork:
         name: "{{ prefix }}-subnet"
         region: "{{ region }}"
@@ -35,10 +35,7 @@
         state: present
       register: address
 
-    - debug:
-        var: address
-        
-    - name: Create an Instance 
+    - name: Create Virtual Machine
       google.cloud.gcp_compute_instance:
         state: present
         name: "{{ prefix }}-vm"
@@ -55,12 +52,8 @@
               - name: External NAT
                 type: ONE_TO_ONE_NAT
                 nat_ip: "{{ address }}"
-      register: output
 
-    - debug:
-        var: output
-
-    - name: create a firewall
+    - name: Configuring firewall to allow SSH access
       google.cloud.gcp_compute_firewall:
         name: "{{ prefix }}-ssh-rule"
         direction: "ingress"
@@ -73,3 +66,8 @@
         priority: "1000"
         source_ranges: "0.0.0.0/0"
         state: present
+
+   - name: Display VM Public IP
+      debug:
+        msg: "Your public IP address is: {{ network.address.address }}"
+
