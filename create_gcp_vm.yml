@@ -67,7 +67,7 @@
         source_ranges: "0.0.0.0/0"
         state: present
 
-   - name: Display VM Public IP
+    - name: Display VM Public IP
       debug:
         msg: "Your public IP address is: {{ network.address.address }}"
 
