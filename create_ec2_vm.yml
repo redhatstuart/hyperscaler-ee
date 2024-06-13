@@ -3,21 +3,21 @@
   hosts: localhost
   tasks:
 
-    - name: create a new EC2 key pair
+    - name: Create EC2 SSH key pair
       amazon.aws.ec2_key:
         name: "{{ prefix }}-ssh-key"
         region: "{{ region }}"
       no_log: true
       register: aws_ec2_key_pair
 
-    - name: Create a new VPC 
+    - name: Create VPC Network
       amazon.aws.ec2_vpc_net:
         name: "{{ prefix }}-vpc_net"
         cidr_block: "{{ cidr_block }}"
         region: "{{ region }}"
       register: vpc
   
-    - name: Create a new Subnet
+    - name: Create VPC Network
       amazon.aws.ec2_vpc_subnet:
         cidr: "{{ cidr }}"
         region: "{{ region }}"
@@ -43,7 +43,7 @@
             rule_desc: "allow all on port 22"
       register: security_group
     
-    - name: Launch an EC2 Instance
+    - name: Create Virtual Machine
       amazon.aws.ec2_instance:
         name: "{{ prefix }}-vm"
         key_name: "{{ prefix }}-ssh-key"
@@ -59,7 +59,7 @@
         image_id: "{{ ami }}"
       register: vm
 
-    - name: Gather information about a particular instance using ID
+    - name: Gathering VM information using instance ID 
       amazon.aws.ec2_instance_info:
         instance_ids: "{{ vm.instance_ids[0] }}"
         region: "{{ region }}"
