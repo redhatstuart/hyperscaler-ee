@@ -24,3 +24,32 @@ The following text files will show you the Ansible modules that are present in e
 * [ee-supported-modules.txt](ee-supported-modules.txt)
 * [ee-minimal-modules.txt](ee-minimal-modules.txt)
 * [ee-hyperscaler-modules.txt](ee-hyperscaler-modules.txt) <-- This is the EE you should end up with after ansible-builder is complete
+
+## AAP Configuration
+
+The following variables will be needed for each of your templates (sample values have been provided):
+
+'''Amazon EC2'''
+* ami: "ami-0ef50c2b2eb330511"
+* cidr: "10.10.0.0/24"
+* cidr_block: "10.10.0.0/16"
+* instance_type: "t3.small"
+* prefix: "mytestdemo"
+* region: "us-east-2"
+
+'''Azure'''
+* admin_username: "azureuser"
+* admin_password: "Ins3cur3passw0rd!"
+* azure_region: "eastus"
+* prefix: "mytestdemo"
+* vmSize: "Standard_D4s_v3"
+
+'''GCP'''
+* disk_size: "20"
+* machine_type: "f1-micro"
+* prefix: "mytestdemo"
+* region: "northamerica-northeast2"
+* source_image: "projects/rhel-cloud/global/images/rhel-9-v20240611"
+* subnet_cidr: "10.10.0.0/24"
+* zone: "northamerica-northeast2-a"
+
