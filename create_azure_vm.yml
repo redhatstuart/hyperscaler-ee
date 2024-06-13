@@ -8,21 +8,21 @@
         name: "{{ prefix }}-rg"
         location: "{{ azure_region }}"
 
-    - name: Create Azure Virtual Network
+    - name: Create Virtual Network
       azure.azcollection.azure_rm_virtualnetwork:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vnet"
         address_prefixes: ["10.0.0.0/16"]  # Replace with your desired address prefix
         location: "{{ azure_region }}"
 
-    - name: Create Azure Subnet
+    - name: Create Subnet
       azure.azcollection.azure_rm_subnet:
         resource_group: "{{ prefix }}-rg"
         virtual_network_name: "{{ prefix }}-vnet"
         name: "{{ prefix }}-subnet"
         address_prefix: "10.0.0.0/24"  # Replace with your desired subnet address prefix
 
-    - name: Create Azure Public IP
+    - name: Reserve a static IP Address
       azure.azcollection.azure_rm_publicipaddress:
         resource_group: "{{ prefix }}-rg"
         allocation_method: Static
@@ -30,7 +30,7 @@
         location: "{{ azure_region }}"
       register: public_ip_result
 
-    - name: Create Azure Network Security Group (NSG)
+    - name: Create a Security Group
       azure.azcollection.azure_rm_securitygroup:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nsg"
@@ -42,7 +42,7 @@
             access: Allow
             direction: Inbound
 
-    - name: Create Azure Network Interface Card (NIC)
+    - name: Create Network Interface
       azure.azcollection.azure_rm_networkinterface:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-nic"
@@ -54,7 +54,7 @@
           public_ip_name: "{{ prefix }}-pip"
           primary: True
 
-    - name: Create Azure Virtual Machine
+    - name: Create Virtual Machine
       azure.azcollection.azure_rm_virtualmachine:
         resource_group: "{{ prefix }}-rg"
         name: "{{ prefix }}-vm"
