@@ -29,7 +29,7 @@ The following text files will show you the Ansible modules that are present in e
 
 The following variables will be needed for each of your templates (sample values have been provided):
 
-'''Amazon EC2'''
+{{big| Amazon EC2}}
 * ami: "ami-0ef50c2b2eb330511"
 * cidr: "10.10.0.0/24"
 * cidr_block: "10.10.0.0/16"
@@ -37,14 +37,14 @@ The following variables will be needed for each of your templates (sample values
 * prefix: "mytestdemo"
 * region: "us-east-2"
 
-'''Azure'''
+{{big| Azure}}
 * admin_username: "azureuser"
 * admin_password: "Ins3cur3passw0rd!"
 * azure_region: "eastus"
 * prefix: "mytestdemo"
 * vmSize: "Standard_D4s_v3"
 
-'''GCP'''
+{{big| GCP}}
 * disk_size: "20"
 * machine_type: "f1-micro"
 * prefix: "mytestdemo"
