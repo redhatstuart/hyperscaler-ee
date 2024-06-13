@@ -35,9 +35,6 @@
         state: present
       register: address
 
-    - debug:
-        var: address
-
     - name: Create Virtual Machine
       google.cloud.gcp_compute_instance:
         state: present
@@ -72,5 +69,5 @@
 
     - name: Display VM Public IP
       debug:
-        msg: "Your public IP address is: {{ network.address.address }}"
+        msg: "Your public IP address is: {{ address.address }}"
 
